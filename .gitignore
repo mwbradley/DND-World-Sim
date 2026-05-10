@@ -216,3 +216,35 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+
+# === Project Specific ===
+
+# World state persistence (don't commit sim state)
+backend/world_state.json
+
+# Map images (large binary files, manage separately)
+frontend/public/maps/
+
+# Environment files (API keys, config)
+.env
+.env.local
+.env.*.local
+
+# ===  Node / React Frontend ===
+frontend/node_modules/
+frontend/dist/
+frontend/build/
+frontend/.env
+frontend/.env.local
+
+# Vite cache
+frontend/.vite/
+
+# ===  FastAPI / Uvicorn ===
+*.pid
+
+# === OS Stuff ===
+.DS_Store
+Thumbs.db
+desktop.ini
