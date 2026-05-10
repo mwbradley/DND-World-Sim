@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import useWorldState from '../hooks/useWorldState'
 import SettlementPin from './SettlementPin'
 
-const THRESHOLD = 5
+const THRESHOLD = 15
 
 function MapCanvas() {
     const [svgContent, setSvgContent] = useState(null)
@@ -14,6 +14,7 @@ function MapCanvas() {
     const transformRef = useRef({ x: 0, y: 0, scale: 1 })
     const containerRef = useRef(null)
     const world = useWorldState()
+    const mousePos = useRef({ x: 0, y: 0 })
 
     useEffect(() => {
         fetch("/maps/Matesia.svg")
@@ -57,11 +58,17 @@ function MapCanvas() {
             x: e.clientX - transformRef.current.x,
             y: e.clientY - transformRef.current.y
         }
+        // Store the original click position for drag detection
+        mousePos.current = { x: e.clientX, y: e.clientY }
     }
 
     const onMouseMove = (e) => {
         if (!isDragging.current) return
-        didDrag.current = true
+        // Only count as drag if moved more than 5px
+        const dx = Math.abs(e.clientX - mousePos.current.x)
+        const dy = Math.abs(e.clientY - mousePos.current.y)
+        if (dx > 5 || dy > 5) didDrag.current = true
+        
         const newT = {
             ...transformRef.current,
             x: e.clientX - dragStart.current.x,
@@ -75,15 +82,32 @@ function MapCanvas() {
         isDragging.current = false
         if (!didDrag.current) {
             const t = transformRef.current
-            const svgX = (e.clientX - t.x) / t.scale
-            const svgY = (e.clientY - t.y) / t.scale
+            const rect = containerRef.current.getBoundingClientRect()
+            
+            // Subtract container offset from click position
+            const svgX = (e.clientX - rect.left - t.x) / t.scale
+            const svgY = (e.clientY - rect.top - t.y) / t.scale
+
             console.log("Click SVG coords:", svgX, svgY)
 
-            const hit = world?.settlements.find(s =>
-                Math.abs(s.x - svgX) < THRESHOLD &&
-                Math.abs(s.y - svgY) < THRESHOLD
-            )
-            if (hit) setSelected(hit)
+            let closest = null
+            let closestDist = Infinity
+
+            world?.settlements.forEach(s => {
+                const dist = Math.sqrt(
+                    Math.pow(s.x - svgX, 2) +
+                    Math.pow(s.y - svgY, 2)
+                )
+                if (dist < closestDist) {
+                    closestDist = dist
+                    closest = s
+                }
+            })
+
+            console.log("Closest:", closest?.name, "Distance:", closestDist.toFixed(2))
+
+            const dynamicThreshold = 15 / t.scale
+            if (closestDist < dynamicThreshold) setSelected(closest)
             else setSelected(null)
         }
     }
