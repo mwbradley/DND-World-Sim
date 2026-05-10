@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from 'react'
 import useWorldState from '../hooks/useWorldState'
 import SettlementPin from './SettlementPin'
+import InfoPanel from './InfoPanel'
+import RouteLine from './RouteLine'
 
 const THRESHOLD = 15
 
@@ -88,8 +90,6 @@ function MapCanvas() {
             const svgX = (e.clientX - rect.left - t.x) / t.scale
             const svgY = (e.clientY - rect.top - t.y) / t.scale
 
-            console.log("Click SVG coords:", svgX, svgY)
-
             let closest = null
             let closestDist = Infinity
 
@@ -104,8 +104,6 @@ function MapCanvas() {
                 }
             })
 
-            console.log("Closest:", closest?.name, "Distance:", closestDist.toFixed(2))
-
             const dynamicThreshold = 15 / t.scale
             if (closestDist < dynamicThreshold) setSelected(closest)
             else setSelected(null)
@@ -113,6 +111,11 @@ function MapCanvas() {
     }
 
     if (!svgContent || !world) return <div style={{color:"white"}}>Loading map...</div>
+
+    const settlementMap = world.settlements.reduce((acc, s) => {
+        acc[s.id] = { x: s.x, y: s.y }
+        return acc
+    }, {})
 
     return (
         <>
@@ -141,22 +144,16 @@ function MapCanvas() {
                         }}
                     >
                         <image href="/maps/Matesia.svg" width={1920} height={1006} />
+                        {world.routes.map(r => (
+                            <RouteLine key={r.id} route={r} settlementMap={settlementMap} />
+                        ))}
                         {world.settlements.map(s => (
                             <SettlementPin key={s.id} settlement={s} />
                         ))}
                     </svg>
                 </div>
             </div>
-            {selected && (
-                <div className='info-panel'>
-                    <button onClick={() => setSelected(null)}>X</button>
-                    <h2>{selected.name}</h2>
-                    <p>Tier: {selected.tier}</p>
-                    <p>Population: {selected.population.toLocaleString()}</p>
-                    <p>State: {selected.state}</p>
-                    <p>Culture: {selected.culture}</p>
-                </div>
-            )}
+            <InfoPanel selected={selected} world={world} onClose={() => setSelected(null)} />
         </>
     )
 }
