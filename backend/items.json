@@ -1,0 +1,204 @@
+{
+  "items": [
+    {
+      "id": 1,
+      "name": "Copper",
+      "category": "metal",
+      "base_price": 5,
+      "produced_by": ["Grassland", "Hot desert", "Cold desert"],
+      "weight": 2
+    },
+    {
+      "id": 2,
+      "name": "Steel",
+      "category": "metal",
+      "base_price": 100,
+      "produced_by": ["Grassland", "Hot desert", "Cold desert", "Taiga"],
+      "weight": 1
+    },
+    {
+        "id": 3,
+        "name": "Gold",
+        "category": "metal",
+        "base_price": 1000,
+        "produced_by": ["Grassland", "Hot desert", "Cold desert"],
+        "weight": 1
+    },
+    {
+        "id": 4,
+        "name": "Silver",
+        "category": "metal",
+        "base_price": 500,
+        "produced_by": ["Grassland", "Hot desert", "Cold desert"],
+        "weight": 1
+    },
+    {
+        "id": 5,
+        "name": "Platinum",
+        "category": "metal",
+        "base_price": 50000,
+        "produced_by": ["Grassland", "Hot desert", "Cold desert"],
+        "weight": 1
+    },
+    {
+        "id": 6,
+        "name": "Diamond",
+        "category": "gem",
+        "base_price": 500000,
+        "produced_by": ["Grassland", "Hot desert", "Cold desert"],
+        "weight": 1
+    },
+    {
+        "id": 7,
+        "name": "Ruby",
+        "category": "gem",
+        "base_price": 500000,
+        "produced_by": ["Grassland", "Hot desert", "Cold desert"],
+        "weight": 1
+    },
+    {
+        "id": 8,
+        "name": "Emerald",
+        "category": "gem",
+        "base_price": 500000,
+        "produced_by": ["Grassland", "Hot desert", "Cold desert"],
+        "weight": 1
+    },
+    {
+        "id": 9,
+        "name": "Sapphire",
+        "category": "gem",
+        "base_price": 500000,
+        "produced_by": ["Grassland", "Hot desert", "Cold desert"],
+        "weight": 1
+    },
+    {
+        "id": 10,
+        "name": "Amethyst",
+        "category": "gem",
+        "base_price": 10000,
+        "produced_by": ["Grassland", "Hot desert", "Cold desert"],
+        "weight": 1
+    },
+    {
+        "id": 11,
+        "name": "Opal",
+        "category": "gem",
+        "base_price": 100000,
+        "produced_by": ["Grassland", "Hot desert", "Cold desert"],
+        "weight": 1
+    },
+    {
+        "id": 12,
+        "name": "Granite",
+        "category": "stone",
+        "base_price": 50,
+        "produced_by": ["Grassland", "Hot desert", "Cold desert", "Savanna"],
+        "weight": 20
+    },
+    {
+        "id": 13,
+        "name": "Obsidian",
+        "category": "stone",
+        "base_price": 100,
+        "produced_by": ["Grassland", "Hot desert", "Cold desert", "Savanna"],
+        "weight": 20
+    },
+    {
+        "id": 14,
+        "name": "Marble",
+        "category": "stone",
+        "base_price": 25,
+        "produced_by": ["Grassland", "Hot desert", "Cold desert", "Savanna"],
+        "weight": 20
+    },
+    {
+        "id": 15,
+        "name": "Common timber",
+        "category": "wood",
+        "base_price": 100,
+        "produced_by": ["Temperate deciduos forest", "Tropical seasonal forest"],
+        "weight": 1000
+    },
+    {
+        "id": 16,
+        "name": "Exotic timber",
+        "category": "wood",
+        "base_price": 1000,
+        "produced_by": ["Temperate rainforest", "Tropical rainforest", "Taiga"],
+        "weight": 1000
+    },
+    {
+        "id": 17,
+        "name": "Ivory",
+        "category": "organic",
+        "base_price": 10000,
+        "produced_by": ["Savanna", "Tundra"],
+        "weight": 1
+    },
+    {
+        "id": 18,
+        "name": "Amber",
+        "category": "organic",
+        "base_price": 10000,
+        "produced_by": ["Temperate deciduos forest", "Temperate rainforest"],
+        "weight": 1
+    },
+    {
+        "id": 19,
+        "name": "Coral",
+        "category": "organic",
+        "base_price": 10000,
+        "produced_by": ["Wetlands", "Tundra", "Tropical rainforest"],
+        "weight": 20
+    },
+    {
+        "id": 20,
+        "name": "Jade",
+        "category": "organic",
+        "base_price": 10000,
+        "produced_by": ["Grassland", "Hot desert", "Cold desert"],
+        "weight": 1
+    },
+    {
+        "id": 21,
+        "name": "Clay",
+        "category": "raw",
+        "base_price": 1,
+        "produced_by": ["Savanna", "Hot desert", "Wetlands"],
+        "weight": 25
+    },
+    {
+        "id": 22,
+        "name": "Carbon",
+        "category": "raw",
+        "base_price": 5,
+        "produced_by": ["Hot desert"],
+        "weight": 1
+    },
+    {
+        "id": 23,
+        "name": "Salt",
+        "category": "raw",
+        "base_price": 5,
+        "produced_by": ["Wetlands", "Tundra", "Tropical rainforest"],
+        "weight": 1
+    },
+    {
+        "id": 24,
+        "name": "Volcanic Ash",
+        "category": "raw",
+        "base_price": 10,
+        "produced_by": ["Cold desert", "Tundra"],
+        "weight": 1
+    },
+    {
+        "id": 25,
+        "name": "Fur",
+        "category": "raw",
+        "base_price": 20,
+        "produced_by": ["Cold desert", "Tundra", "Taiga"],
+        "weight": 1
+    }
+  ]
+}

@@ -30,7 +30,10 @@ cultures_data = data["pack"]["cultures"]
 states_data = data["pack"]["states"]
 
 # Biomes
-biomes_data = data["biomesData"]
+biomes_data = data["biomesData"]["name"]
+
+# Cells
+cells_data = data["pack"]["cells"]
 
 
 # Routes
@@ -62,7 +65,8 @@ for s in burgs_data[1:]:
         "has_market": s.get("plaza", 0),
         "has_walls": s.get("walls", 0),
         "has_citadel": s.get("citadel", 0),
-        "tier": tier
+        "tier": tier,
+        "biome_name": biomes_data[cells_data[s["cell"]]["biome"]]
     }
     if (tier != "village"):
         settlements.append(burg_dict)
