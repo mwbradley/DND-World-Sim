@@ -1,4 +1,6 @@
 import json
+import os
+print(os.getcwd())
 
 with open("MatesiaFull.json", "r", encoding="utf-8") as f:
     data = json.load(f)
@@ -40,7 +42,7 @@ cells_data = data["pack"]["cells"]
 routes_data = data["pack"]["routes"]
 
 
-settlements = [];
+settlements = []
 
 for s in burgs_data[1:]:
     pop = s["population"]

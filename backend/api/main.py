@@ -11,8 +11,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-with open('world_seed.json', 'r') as file:
-    world_state = json.load(file)
+with open('world_seed.json', 'r') as file1, open('economy_state.json', 'r') as file2:
+    world_state = json.load(file1)
+    economy_state = json.load(file2)
 
 @app.get("/")
 def root():
@@ -21,4 +22,4 @@ def root():
 
 @app.get("/world-state")
 def get_world_state():
-    return world_state
+    return world_state, economy_state

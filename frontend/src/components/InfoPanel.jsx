@@ -20,6 +20,7 @@ function InfoPanel({ selected, world, onClose }) {
             <p>Population: {selected.population.toLocaleString()}</p>
             <p>State: {stateMap[selected.state]}</p>
             <p>Culture: {cultureMap[selected.culture]}</p>
+            <p>Biome: {selected.biome_name}</p>
         </div>
     )
 }
