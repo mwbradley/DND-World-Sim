@@ -70,8 +70,7 @@ for s in burgs_data[1:]:
         "tier": tier,
         "biome_name": biomes_data[cells_data[s["cell"]]["biome"]]
     }
-    if (tier != "village"):
-        settlements.append(burg_dict)
+    settlements.append(burg_dict)
 
 cultures = []
 

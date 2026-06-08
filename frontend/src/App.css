@@ -60,3 +60,19 @@ body {
     margin: 4px 0;
     font-size: 14px;
 }
+
+.control-bar {
+    position: relative;
+    background: #2a2a3e;
+    color: #fff;
+}
+
+.control-bar button {
+    display: flex;
+    justify-self: center;
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    font-size: 24px;
+}

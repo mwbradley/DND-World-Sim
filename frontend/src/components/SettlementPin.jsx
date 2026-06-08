@@ -1,6 +1,9 @@
+import { useState } from 'react'
 function SettlementPin({ settlement, onClick }) {
-    const color = settlement.tier === "city" ? "#ffd700" : "#c0c0c0"
-    const size = settlement.tier === "city" ? 8 : 5
+    const color = settlement.tier === "city" ? "#ffd700" : 
+                  settlement.tier === "town" ? "#c0c0c0" : "#8B7355"
+    const size = settlement.tier === "city" ? 12 : 
+                 settlement.tier === "town" ? 8 : 5
 
     return (
         <circle

@@ -3,6 +3,7 @@ import useWorldState from '../hooks/useWorldState'
 import SettlementPin from './SettlementPin'
 import InfoPanel from './InfoPanel'
 import RouteLine from './RouteLine'
+import ControleBar from './ControlBar'
 
 const THRESHOLD = 15
 
@@ -10,13 +11,21 @@ function MapCanvas() {
     const [svgContent, setSvgContent] = useState(null)
     const [selected, setSelected] = useState(null)
     const [transform, setTransform] = useState({ x: 0, y: 0, scale: 1 })
+    const { world, refresh } = useWorldState()
     const isDragging = useRef(false)
     const dragStart = useRef({ x: 0, y: 0 })
     const didDrag = useRef(false)
     const transformRef = useRef({ x: 0, y: 0, scale: 1 })
     const containerRef = useRef(null)
-    const world = useWorldState()
     const mousePos = useRef({ x: 0, y: 0 })
+    const svgRef = useRef(null)
+
+    // Call after drag to render after, instead of each move
+    const applyTransform = (t) => {
+        if (svgRef.current) {
+            svgRef.current.style.transform = `translate(${t.x}px, ${t.y}px) scale(${t.scale})`
+        }
+    }
 
     useEffect(() => {
         fetch("/maps/Matesia.svg")
@@ -46,12 +55,12 @@ function MapCanvas() {
             const newY = mouseY - (mouseY - t.y) * (newScale / t.scale)
             const newT = { x: newX, y: newY, scale: newScale }
             transformRef.current = newT
-            setTransform({ ...newT })
+            applyTransform({ ...newT })
         }
 
         el.addEventListener("wheel", onWheel, { passive: false })
         return () => el.removeEventListener("wheel", onWheel)
-    }, [svgContent])
+    }, [svgContent, world])
 
     const onMouseDown = (e) => {
         isDragging.current = true
@@ -77,7 +86,7 @@ function MapCanvas() {
             y: e.clientY - dragStart.current.y
         }
         transformRef.current = newT
-        setTransform({ ...newT })
+        applyTransform({ ...newT })
     }
 
     const onMouseUp = (e) => {
@@ -93,7 +102,7 @@ function MapCanvas() {
             let closest = null
             let closestDist = Infinity
 
-            world?.settlements.forEach(s => {
+            world.world?.settlements.forEach(s => {
                 const dist = Math.sqrt(
                     Math.pow(s.x - svgX, 2) +
                     Math.pow(s.y - svgY, 2)
@@ -112,7 +121,7 @@ function MapCanvas() {
 
     if (!svgContent || !world) return <div style={{color:"white"}}>Loading map...</div>
 
-    const settlementMap = world.settlements.reduce((acc, s) => {
+    const settlementMap = world.world.settlements.reduce((acc, s) => {
         acc[s.id] = { x: s.x, y: s.y }
         return acc
     }, {})
@@ -135,6 +144,7 @@ function MapCanvas() {
                     }}
                 >
                     <svg
+                        ref={svgRef}
                         width="1920"
                         height="1006"
                         style={{
@@ -144,15 +154,16 @@ function MapCanvas() {
                         }}
                     >
                         <image href="/maps/Matesia.svg" width={1920} height={1006} />
-                        {world.routes.map(r => (
-                            <RouteLine key={r.id} route={r} settlementMap={settlementMap} />
+                        {world.world.routes.map((r, index) => (
+                            <RouteLine key={index} route={r} settlementMap={settlementMap} />
                         ))}
-                        {world.settlements.map(s => (
+                        {world.world.settlements.map(s => (
                             <SettlementPin key={s.id} settlement={s} />
                         ))}
                     </svg>
                 </div>
             </div>
+            <ControleBar world={world} onTickComplete={ refresh }/>
             <InfoPanel selected={selected} world={world} onClose={() => setSelected(null)} />
         </>
     )

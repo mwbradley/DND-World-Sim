@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from sim.tick import tick
 import json
 
 app = FastAPI()
@@ -22,4 +23,13 @@ def root():
 
 @app.get("/world-state")
 def get_world_state():
-    return world_state, economy_state
+    return {
+        "world": world_state,
+        "economy": economy_state
+    }
+
+@app.post("/tick")
+def run_tick():
+    global economy_state
+    economy_state = tick()
+    return economy_state

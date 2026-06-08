@@ -22,12 +22,14 @@ for s in world_data["settlements"]:
         stock = random.randint(100, 499)
 
     for i in item_data["items"]:
+        item_name = i["name"]
         if s["biome_name"] in i["produced_by"]:
             price = random.randint(int(i["base_price"] * 1.1), int(i["base_price"] * 2.2))
         else:
             price = random.randint(int(i["base_price"] * 1.6), int(i["base_price"] * 5))
 
         inventory[str(i["id"])] = {
+            "name": item_name,
             "stock": max(1, int(stock * stock_multiplier.get(i["rarity"], 1.0))),
             "price": price
             }
@@ -35,6 +37,9 @@ for s in world_data["settlements"]:
     settlements_dict = {
         "id": s["id"],
         "name": s["name"],
+        "biome_name": s["biome_name"],
+        "tier": s["tier"],
+        "population": s["population"],
         "inventory": inventory
         }
     
