@@ -1,3 +1,4 @@
+import sqlite3
 import json
 from sim.systems.economy import produce_goods, apply_consumption, adjust_prices
 

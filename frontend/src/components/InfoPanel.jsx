@@ -15,8 +15,11 @@ function InfoPanel({ selected, world, onClose }) {
         return acc
     }, {})
 
-    const econSettlement = world.economy.find(e => e.id === selected.id)
-    const itemIds = econSettlement ? Object.keys(econSettlement.inventory) : []
+    const settlementEconomy = world.economy.filter(
+        e => e.settlement_id === selected.id
+    )
+
+    const currentItem = settlementEconomy.find(e => String(e.item_id) === selectedItem) ?? settlementEconomy[0]
 
     return (
         <div className='info-panel'>
@@ -24,24 +27,27 @@ function InfoPanel({ selected, world, onClose }) {
             <h2>{selected.name}</h2>
             <p>Tier: {selected.tier}</p>
             <p>Population: {selected.population.toLocaleString()}</p>
-            <p>State: {stateMap[selected.state]}</p>
-            <p>Culture: {cultureMap[selected.culture]}</p>
+            <p>State: {stateMap[selected.state_id]}</p>
+            <p>Culture: {cultureMap[selected.culture_id]}</p>
             <p>Biome: {selected.biome_name}</p>
-            {econSettlement && (
+            {settlementEconomy && (
                 <div>
-                    <select 
-                        value={selectedItem} 
+                    <select
+                        value={currentItem ? String(currentItem.item_id) : ""}
                         onChange={e => setSelectedItem(e.target.value)}
                     >
-                        {itemIds.map(id => (
-                            <option key={id} value={id}>
-                                {econSettlement.inventory[id].name}
+                        {settlementEconomy.map(item => (
+                            <option
+                                key={item.item_id}
+                                value={item.item_id}
+                            >
+                                {item.name}
                             </option>
                         ))}
                     </select>
-                    <p>Item: {econSettlement.inventory[selectedItem]?.name}</p>
-                    <p>Stock: {econSettlement.inventory[selectedItem]?.stock}</p>
-                    <p>Cost: {econSettlement.inventory[selectedItem]?.price}cp</p>
+                    <p>Item: {currentItem?.name}</p>
+                    <p>Stock: {currentItem?.stock}</p>
+                    <p>Cost: {currentItem?.price} cp</p>
                 </div>
             )}
         </div>

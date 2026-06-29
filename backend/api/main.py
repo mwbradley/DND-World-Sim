@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from sim.tick import tick
-import json
+import sqlite3
 
 app = FastAPI()
 
@@ -12,9 +12,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-with open('world_seed.json', 'r') as file1, open('economy_state.json', 'r') as file2:
-    world_state = json.load(file1)
-    economy_state = json.load(file2)
+conn = sqlite3.connect("matesia.db", check_same_thread=False)
+conn.row_factory = sqlite3.Row  # lets you access columns by name like a dict
+cursor = conn.cursor()
 
 @app.get("/")
 def root():
@@ -23,13 +23,37 @@ def root():
 
 @app.get("/world-state")
 def get_world_state():
+    cursor.execute("SELECT * FROM settlements")
+    settlements = [dict(row) for row in cursor.fetchall()]
+
+    cursor.execute("SELECT * FROM routes")
+    routes = [dict(row) for row in cursor.fetchall()]
+
+    cursor.execute("SELECT * FROM cultures")
+    cultures = [dict(row) for row in cursor.fetchall()]
+
+    cursor.execute("SELECT * FROM states")
+    states = [dict(row) for row in cursor.fetchall()]
+
+    cursor.execute("""
+        SELECT e.settlement_id, e.item_id, i.name, e.stock, e.price 
+        FROM economy e
+            INNER JOIN settlements s on s.id = e.settlement_id
+            INNER JOIN items i on i.id = e.item_id
+        """)
+    economy = [dict(row) for row in cursor.fetchall()]
+
     return {
-        "world": world_state,
-        "economy": economy_state
+        "world": {
+            "settlements": settlements,
+            "routes": routes,
+            "cultures": cultures,
+            "states": states
+        },
+        "economy": economy
     }
 
 @app.post("/tick")
 def run_tick():
-    global economy_state
-    economy_state = tick()
-    return economy_state
+    tick()
+    return {"status": "ok"}
